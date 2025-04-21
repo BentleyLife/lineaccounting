@@ -18,7 +18,10 @@ def connect_sheet():
     sheet = client.open_by_key(SPREADSHEET_ID)
     return sheet.sheet1  # 第一個工作表
 
-def record_expense(amount: int):
+def record_expense(name: str, amount: int):
     ws = connect_sheet()
     today = datetime.datetime.now().strftime('%Y-%m-%d')
-    ws.append_row([today, amount])
+    # 假設第一列是日期，第二列是名稱，第三列是金額
+    ws.append_row([today, name, amount])
+``` '__main__':
+    app.run(port=5000)

@@ -21,7 +21,7 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)
 schedule.every().day.at("22:00").do(
     lambda: line_bot_api.push_message(
         USER_ID,
-        TextSendMessage(text="今天記帳了嗎？請直接回覆金額！💰")
+        TextSendMessage(text="今天記帳了嗎？請輸入「名稱 金額」來記帳！💰")
     )
 )
 
@@ -45,16 +45,19 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     text = event.message.text.strip()
-    if text.isdigit():
-        amount = int(text)
+    parts = text.split()
+    # 支援「名稱 金額」格式
+    if len(parts) == 2 and parts[1].isdigit():
+        name = parts[0]
+        amount = int(parts[1])
         try:
-            google_sheet.record_expense(amount)
-            reply = f"已記錄金額：{amount} 元到 Google Sheet ✅"
+            google_sheet.record_expense(name, amount)
+            reply = f"已記錄：{name} {amount} 元到 Google Sheet ✅"
         except Exception as e:
             reply = "記錄失敗，請稍後再試。"
             print(f"Error writing to sheet: {e}")
     else:
-        reply = "請輸入純數字金額喔～"
+        reply = "請輸入「名稱 金額」的格式，例如：午餐 150"
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
 if __name__ == '__main__':
