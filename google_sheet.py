@@ -10,7 +10,7 @@ SCOPE = [
 # 金鑰檔名
 CREDS_FILE = 'credentials.json'
 # 試算表 ID
-SPREADSHEET_ID = '你的-Sheet-ID'
+SPREADSHEET_ID = '1x4341FSJsWA_-t5wIfAkjVVngnGiX6TeXUvjcdVpZBQ'
 
 def connect_sheet():
     creds = ServiceAccountCredentials.from_json_keyfile_name(CREDS_FILE, SCOPE)
