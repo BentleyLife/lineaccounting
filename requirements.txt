@@ -4,3 +4,4 @@ schedule
 gspread
 oauth2client
 requests
+gunicorn   # 用於啟動 Flask 應用
